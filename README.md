@@ -340,7 +340,24 @@ https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIO
 
 ### 3.6. Basic ML Practices
 
-Class 04
+#### Requirement: Build a multi-stage data, training, and evaluation pipeline (i.e., an MLOps pipeline).
+
+ML development on the training side of the overall production ML process is enabled by automated pipelines of steps for data processing, model training, model evaluation, and export. While initial ML research might employ minimal steps to train, tune, and test a model, an ML pipeline ready for transition to production will generally employ several steps of pre-training and post-training processing to ensure requirements are met. A typical ML pipeline from data collection to export to production is shown below.
+
+<div align="center">
+<img src="images/training_pipeline.png" alt="Alt Text" width="800">
+<h4>Typical toolchain for production machine learning workflows.</h4>
+</div>
+
+This process includes a pre-training data pipeline stage, a training and tuning stage, and a post-training stage which includes evaluation and export steps. Many configurations are possible for all these stages, and designing an ML pipeline specific to a task or range of tasks that generates models which meet their production requirements is one of the most important tasks an ML engineer performs. What is required for all projects in the research stage preparing to transition to production is that a pipeline has been architected and documented, and the evaluations show the models being exported will meet the defined requirements.
+
+The pre-training pipeline shown here begins with a data collection phase. In research ready for transition to production, this phase would include documented data collection procedures and a system for storing data collection notes, along with specifications for any sensors or collection methods used to acquire data. A feature engineering stage combines data products and performs preprocessing aimed at facilitating subsequent model training. Feature engineering steps may be omitted in deep learning workflows, but may be used to inject domain knowledge (by developing hand-crafted features) into the ML pipeline in ML or hybrid deep learning and ML workflows.
+
+Data augmentation involves generating new data samples via simulation, transformation of existing samples, interpolation, extrapolation, or other methods. Data augmentation may be performed to balance classes, teach a model that attributes can vary, test performance across challenging factors, or a combination of these. Unsupervised and semi-supervised labeling help to expedite data labeling, determine if the data is separable and check human labels for biases before final labels are assigned.
+
+The training and tuning stage shown here begins with identification of candidate models. This step can involve performing initial experimentation with candidate models, including different underlying ML techniques, before selecting a learning paradigm (e.g., fully-supervised learning), and then proceeding to loss function design for the specific model selected. The loss function design stage involves selecting a loss function which captures the goal of the problem. The loss function defines what "good" performance is, making this step one of the most critical in the pipeline. With a model and loss selected, batches of models are trained and their hyperparameters are tuned.
+
+The evaluation stage includes explainability and adversarial testing, which are performed before the model is sent to production to determine if it is worth proceeding. Explainability can help evaluate what the model finds important, to ensure that the model is using the correct information to make decisions. An explainability evaluation includes local explainability (assessments of what factors drive individual model decisions) and global explainability (assessments of what is important to a model overall). Adversarial testing involves testing the model against unnatural inputs deliberately designed to cause problems with model output, and can help both with robustness to adversarial inputs and with general robustness. Once a model is ready, it can be serialized for export to production. The serialization must be conformance tested to ensure there were no errors in the serialization process.
 
 ### 3.7. Data Pipeline
 https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
