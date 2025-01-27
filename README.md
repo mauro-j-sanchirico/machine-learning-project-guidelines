@@ -342,11 +342,11 @@ https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIO
 
 #### Requirement: Build a multi-stage data, training, and evaluation pipeline (i.e., an MLOps pipeline).
 
-ML development on the training side of the overall production ML process is enabled by automated pipelines of steps for data processing, model training, model evaluation, and export. While initial ML research might employ minimal steps to train, tune, and test a model, an ML pipeline ready for transition to production will generally employ several steps of pre-training and post-training processing to ensure requirements are met. A typical ML pipeline from data collection to export to production is shown below.
+ML development on the training side of the overall production ML process is enabled by automated pipelines of steps for data processing, model training, model evaluation, and export. While initial ML research might employ minimal steps to train, tune, and test a model, an ML pipeline ready for transition to production will generally employ several steps of pre-training and post-training processing to ensure requirements are met. A typical ML pipeline from data collection to export to production is shown below. Each subsequent best practice is best understood in context with where it falls in this pipeline.
 
 <div align="center">
 <img src="images/training_pipeline.png" alt="Alt Text" width="800">
-<h4>Typical toolchain for production machine learning workflows.</h4>
+<h4>Typical training pipeline with stages for data curation, training/tuning, post-training evaluation and deployment.</h4>
 </div>
 
 This process includes a pre-training data pipeline stage, a training and tuning stage, and a post-training stage which includes evaluation and export steps. Many configurations are possible for all these stages, and designing an ML pipeline specific to a task or range of tasks that generates models which meet their production requirements is one of the most important tasks an ML engineer performs. What is required for all projects in the research stage preparing to transition to production is that a pipeline has been architected and documented, and the evaluations show the models being exported will meet the defined requirements.
@@ -359,6 +359,20 @@ The training and tuning stage shown here begins with identification of candidate
 
 The evaluation stage includes explainability and adversarial testing, which are performed before the model is sent to production to determine if it is worth proceeding. Explainability can help evaluate what the model finds important, to ensure that the model is using the correct information to make decisions. An explainability evaluation includes local explainability (assessments of what factors drive individual model decisions) and global explainability (assessments of what is important to a model overall). Adversarial testing involves testing the model against unnatural inputs deliberately designed to cause problems with model output, and can help both with robustness to adversarial inputs and with general robustness. Once a model is ready, it can be serialized for export to production. The serialization must be conformance tested to ensure there were no errors in the serialization process.
 
+#### Requirement: Do not train on the test data (and remember this can happen in sneaky ways).
+
+Videos
+
+Time series
+
+#### Requirement: Provide a means to detect drift and update models to account for it.
+
+#### Requirement: Evaluate model fitting capacity.
+
+#### Requirement: Track ML experiments.
+
+#### Requirement: Employ pre-processing and post-processing guardrails for input and output validation.
+
 ### 3.7. Data Pipeline
 https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
 
@@ -366,61 +380,61 @@ https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIO
 
 Class 06
 
-https://github.com/ruc-practical-ai/fall-2024-class-06/blob/main/notebooks/01_image_sensor_modeling_with_pybsm.ipynb
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-class-06/blob/main/notebooks/01_image_sensor_modeling_with_pybsm.ipynb)
 
-https://github.com/ruc-practical-ai/fall-2024-class-06/blob/main/notebooks/02_more_pybsm_examples.ipynb
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-class-06/blob/main/notebooks/02_more_pybsm_examples.ipynb)
 
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 3.9. Architecture Selection
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 3.10. Model Training
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 3.11. Hyperparameter Tuning
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 3.12. Early Productionization
 
 Class 07
 
 ### 3.13. Robustness and Hardening
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 3.14. Post-Training Scaling
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 3.15. Red-Teaming
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 3.16. Test and Evaluation
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 
 ## 4. Research Guidance
 
 ### 4.1. Guidance on Novelty
 
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 4.2. Deliverables
 
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 4.3. Technical Communication
 
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 4.4. Report Structure
 
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
 ### 4.5. Guidance on Application of Generative AI in Research
 
-https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md
+[comment]: <> (https://github.com/ruc-practical-ai/fall-2024-final-project/blob/main/INSTRUCTIONS.md)
 
-https://github.com/ruc-practical-ai/syllabus
+[comment]: <> (https://github.com/ruc-practical-ai/syllabus)
 
 ## 5. Anti-Patterns to Avoid
 
