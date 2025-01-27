@@ -98,7 +98,7 @@ When loading small datasets for simple problems, it is feasible to load the enti
 
 #### Technique: Choose between functional and class member model fit function architectures deliberately.
 
-Two design paradigms are common for implementing ML training frameworks. The first is the `.fit()` / `.predict()` paradigm implemented by libraries like `scikit-learn`. Under this paradigm, the model fitting function is a member of the model class. The second is the paradigm common in many `torch` examples, where training is thought of as a function which operates on the model class or its weights, which need not be a member of the model class. Both are valid design options that give user code different means of interacting with the library to train models for production, and have have advantages and disadvantages which might make them more or less suitable for different situations. In general, choose to make the training function a member of the model class if the training function is coupled to the model. Make the training function standalone if it is a general implementation of a training pipeline that applies to a broad range of models. If in the context of a design, it makes more sense to say your model *has a* trainer, make the training function a member of the model class. If it makes more sense to say a training *operates on* a model, make the training function standalone. If the training function *is an* instance of a broader trainer, making it inherit from a parent trainer class but not from a common parent with the model.
+Two design paradigms are common for implementing ML training frameworks. The first is the `.fit()` / `.predict()` paradigm implemented by libraries like `scikit-learn`. Under this paradigm, the model fitting function is a member of the model class. The second is the paradigm common in many `torch` examples, where training is thought of as a function which operates on the model class or its weights, which need not be a member of the model class. Both are valid design options that give user code different means of interacting with the library to train models for production, and have have advantages and disadvantages which might make them more or less suitable for different situations. In general, choose to make the training function a member of the model class if the training function is coupled to the model. Make the training function standalone if it is a general implementation of a training pipeline that applies to a broad range of models. If in the context of a design, it makes more sense to say the model *has a* trainer, make the training function a member of the model class. If it makes more sense to say a training *operates on* a model, make the training function standalone. If the training function *is an* instance of a broader trainer, making it inherit from a parent trainer class but not from a common parent with the model.
 
 Making the training function a member of the model class couples that function to the model class. Select this option if future developers would be expected to want to modify the training function when the model is modified. This is useful if the training function is specific to the model (i.e., it would not make sense to use the training function for a different type of model). Users of `scikit-learn` might also find this approach more intuitive. A practical benefit of this approach is that user code need only import the class to gain access to the training function. If the training function is specific to the model, this forces developers to consider changing the training function when the model is changed since the training function now lives close to the model specification code.
 
@@ -112,7 +112,162 @@ The first main tradeoffs of separating training into a function is that develope
 
 ### 2.2. Software Hygiene
 
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/software_tips/00_software_hygiene.ipynb
+#### Section Acknowledgements
+
+Special thanks to my colleague, Rob Shemeley, for providing these tips which encapsulate decades of software engineering wisdom and leadership into a helpful set of tips.
+
+#### Requirement: Use a style guide.
+
+Formatting code manually wastes valuable time that would be better spent writing code. Further, everyone on a team will have different opinions about how code should be formatted. This leads to differing formats on projects worked on by multiple people and time lost to debates about formatting. Avoid this and get back time writing the core code and functionality by running autoformatters.
+
+Two great autoformatter tools are `black` and `isort`. They can be installed with pip.
+
+```bash
+pip install black
+pip install isort
+```
+
+A quick tutorial on using these in VSCode can be found at [https://code.visualstudio.com/docs/python/formatting](https://code.visualstudio.com/docs/python/formatting).
+
+To get them setup in VSCode install them as extensions (following the linked tutorial).
+
+Example VS Code settings to use `black` and `isort` to format code on save:
+
+```json
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        },
+    },
+    "black-formatter.args": [
+        "--line-length",
+        "79"
+    ],
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "notebook.formatOnSave.enabled": true,
+```
+
+#### Requirement: Write high quality commit messages.
+
+Remember that commit messages are a log of the work done on a project. The commit messages should be descriptive so developers can return to a previous version and know which version they are returning to.
+
+Avoid non-descriptive commit messages like "stuff" or "wip". This is unprofessional and forces the team to do extra work to figure out what was meant by these non-descriptive messages.
+
+Bad:
+
+```bash
+git commit -m "stuff"
+```
+
+Good:
+```bash
+git commit -m "Add the unit conversion module"
+```
+
+A good commit message is grammatically correct and should read as "When applied, this commit will...".
+
+The good commit message above would read as "When applied, this commit will add the unit conversion module".
+
+#### Requirement: Use well thought-out, descriptive variable and function names.
+
+Variable and function names should be well thought-out and should ideally make code read almost like english. A good rule is to make function names verbs (since the functions execute an action) and make variables names nouns since they define data. It also helps to add units to variable names to help keep track of them (if not using another solution to keep track of units). See below for good and bad variable name examples.
+
+```python
+# Bad:
+zz = 2
+counter = 0
+eval_flag = True
+
+# Good:
+z_measured_altitude_meters = 2
+page_visits_counter = 0
+# Avoid using flags; they are difficult to test!
+```
+
+#### Requirement: Do not commit dead code.
+
+Do not keep dead code in a system. Dead code is code that is commented out or otherwise unused. Examples of dead code include commented out code and code that is intentionally designed to not run.
+
+An example of dead code is below. These two lines of code look very similar. Why is one commented out another not commented out? This might have been clear to the original developer but will not be clear to future developers. What are the consequences of using the old model of the system instead of the new model? Someone might be tempted in the future to find out by uncommenting the second assignment. If this is an out of date model, then this could lead to harmful consequences.
+
+```python
+x_input = 2
+system_output = 2 * x_input**2 + 4 * x_input + 1
+# Old system output
+# system_output = 3 * x_input ** 2 + 4 * x_input + 2
+```
+
+The following example of flagged out code is just as bad as the example with commented out code (and in some cases can be worse). When should future developers change the `use_old_system_model` flag? Is the line covered by that flag tested? Is it ok to change the flag to true? Since the flag is set to `False` no tests will cover that line.
+
+```python
+x_input = 2
+system_output = 2 * x_input**2 + 4 * x_input + 1
+use_old_system_model = False
+if use_old_system_model:
+    system_output = 3 * x_input**2 + 4 * x_input + 2
+```
+
+Remember that code is a liability. It is desirable to have as little code in a system as possible because every line of code written presents extra risk for error and costs more for future teammates (or your future self) to read and maintain. Commenting out lines of code can be helpful for local debugging or trying ideas. Never push this kind of mess to git for teammates or your future self to deal with though! Use git branches to formally try out multiple ideas complex enough to commit to version control.
+
+#### Requirement: Write high quality code in Python and call from Jupyter notebooks (rather than developing inside notebooks).
+
+Notebooks are useful for seeing results of code inline with the code, for explaining ideas with styled markdown next to code, and for keeping plots close to the code that generated them (some which Tufte, the author of the famous Visual Display of Quantitative Information, would appreciate).
+
+Jupyter notebooks are also useful for working on code where it is helpful to run blocks of the code out of order, or helpful to run some blocks of code several times before proceeding to the next blocks. Jupyter is a popular tool for training and testing machine learning models for this reason. A first set of cells in a machine learning notebook might unpack data. These cells might be run multiple times until the data scientist is sure the data is extracted correctly. A next set of cells might then train a model from the data to make inferences on new data, providing some metrics on the model after each training run. The data scientist might then repeat these cells multiple times until the metrics are satisfactory before proceeding with testing the model on held out data.
+
+These are all excellent use cases for Jupyter. However, developing complex algorithms and systems directly in Jupyter notebooks must be avoided. This is because the ability to run cells out of order can cause unexpected errors. For example, if an algorithm spans multiple cells in a notebook, a user might run the first cells after running some middle cells and before running the end cell. This can cause unexpected results. This can be especially dangerous when running cells out of order causes the result in the final cell to be correct for the wrong reason. Then someone might think the code works, push it so a teammates can use it, and then realize they cannot reproduce the original results!
+
+It is tempting to keep all the code for a single algorithm in a single Jupyter cell to solve this problem. This will introduce other problems for maintainability though. Code (like prose) is easier to read and digest in small blocks. Having code grouped together just to control how your teammates can and cannot execute it in Jupyter is a misuse of Jupyter's cells and will cause teammates to have to read and digest unnecessarily large blocks of code which is burdensome and time consuming.
+
+The way to solve this problem is to develop code inside importable, self-contained Python modules (individual files) or Python packages (folders structured as importable libraries in Python). Breaking code into separate files can be helpful for all of the following reasons.
+
+* Breaking code into separate files ensures that Jupyter notebook cell execution order will not corrupt variable states, without making cells too long.
+* Each file is independently testable and once determined to be working does not need to be touched again.
+* Each file can handle a single responsibility (do one thing and one thing well) so that the team knows exactly where to look if a part of the system or analysis tools are not functioning correctly.
+* When collaborating with teammates, it will be easier to divide work between files and avoid conflicts when merging with git by working on separate files.
+* When working on complex projects across multiple organizations, it is easier to determine what organization is responsible for the code in each file.
+
+#### Requirement: Write high quality documentation in comments or notebooks.
+
+If writing a notebook, be sure to explain plots, derive any key equations, and keep plots close to their explanations and related concepts. If writing a Python script, be sure to include comments. At minimum, include comments at the top of the script stating its purpose, how to use it, and any known issues. For Python modules, use docstrings for each module, function, and class. Adhere to a standard, like the Google Style Guide to make your docstrings consistent. Always make a descriptive README file for any project or repository you create.
+
+#### Technique: Deciding what lines are worth commenting.
+
+For any lines that would look surprising to a teammate, explain those with a specific comment. Keep in mind that any time you are writing a comment that explains how your code works, you are probably writing code that is too surprising! Strive to write simpler code that will be self documenting, using variable names, function names, and the structure of the code to make it read like prose. Save comments to explain why you did something, and let the code itself explain how you did it.
+
+With all documentation, write as if writing to a teammate or a future version of yourself needing to pick up the project after forgetting about its details and being busy with other projects. Try to momentarily "switch off" thoughts deeply involved in the code at-hand and look at it with fresh eyes. If it wouldn't make sense now without having stared at it for a few hours, it will not make sense to you in a few months! Be kind to yourself and explain it in the code.
+
+Remember that the further documentation is away from your code, plots, and any data analyzed in the project, the more likely it will be to get out of date. Keep documentation close to the information it is documenting so when that information changes the team will notice the discrepancy and change it.
+
+For any code in a project ready for production transition, it is immediately obvious to anyone on the team (and to anyone who has to run that code) what it does and how to use it. This seems obvious for small projects, but is not always obvious for big projects. A common pitfall in professional settings is for different teams to develop projects that other teams besides their own cannot run. This might be due to undocumented dependencies, writing surprising or unusual code not adhering to the idioms of the language, or simply a complete lack of any documentation.
+
+Complete documentation should explain all of the following.
+
+* What does the software do?
+* How can a new user run the software?
+* What dependencies are required to run the software?
+* Is any development environment set up required?
+
+#### Requirement: Write unit tests.
+
+In production environments, it is common to practice test driven development (TDD) where code may not be written unless a test has been written first. Then, only the minimum code required to make the test pass may be written. This practice is essential to ensuring that code meets requirements and that unneeded costs and liabilities are not incurred due to extra code being written. The recommended unit test frameworks in Python are `unittest` and `pytest`. If code does not have unit tests, it is not considered maintainable since there is no way to check it is performing as intended once changing it. Additional tests can be employed to ensure that a system functions correctly as a whole, that parts of a system interface correctly with each other, and that a system meets formal requirements specified by a customer.
+
+Unit tests are required for any systems transitioning to production. In research projects, however, it is often difficult or counter-productive to implement TDD prematurely. Often, requirements are not defined yet, meaning it is not possible to write a unit test that is failing. Instead of adopting TDD prematurely, consider options such as first designing a prototype of a system, then implementing a new version using TDD before transition to production. Consider also performing development for system components that do have firm requirements using TDD, and only implementing the parts of the project without firm requirements without tests in the early stage.
+
+#### Further Reading
+
+Many of these tips are inspired by the famous Clean Code book by Robert C. Martin. This book is excellent further reading, and essential reading if developing software professionally.
+
+ML research in Python should strive to write code that is idiomatic for the Python language. Suggestions for further reading on Python include:
+* The [PEP 8 Style Guide](https://peps.python.org/pep-0008/)
+* Python's tour of the standard library [part I](https://docs.python.org/3/tutorial/stdlib.html) and [part 2](https://docs.python.org/3/tutorial/stdlib2.html)
+* Collection of Python resources: [https://docs.python.org/3/tutorial/whatnow.html](https://docs.python.org/3/tutorial/whatnow.html)
+* The Zen of Python (`python -c "import this"`)
 
 ### 2.3. Repository Structure
 
@@ -234,6 +389,10 @@ https://github.com/ruc-practical-ai/syllabus
 ### 5.3. Technical Communication Anti-Patterns
 
 ### 5.4. Software Anti-Patterns
+
+#### Anti-pattern: DO NOT comment every line of code.
+
+Commenting every line of code can be helpful in student examples. It is also a popular style used by generative AI models since the comments help users see the generative AI model's reasoning. In production code, however, commenting every line distracts readers from the code itself, which should be self-documenting if it is well written with well-named variables and function. Do not push code with every line commented to production. Write self-documenting code and add comments deliberately to explain lines that are surprising.
 
 #### Anti-pattern: DO NOT Assume C++ will make Inference Faster or More Memory Efficient by Default.
 
