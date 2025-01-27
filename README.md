@@ -14,7 +14,7 @@ TODO: Cite classical ML texts
 
 ### 1.2. Pre-requisites
 
-Readers of this guide should already be comfortable with the mathematical fundamentals behind modern ML, specifically those that underpin deep learning, including linear algebra, correlation, model fitting, optimization, and numerical methods. It is assumed readers are already proficient in Python and know how to set up local and remote Python development environments. Prior familiarity with tools including scikit-learn, torch, torch lightning, thunder, pandas, matplotlib, numpy, cupy, Open Neural Network Exchange (ONNX) is assumed but not strictly required to understand the guide. Examples of some of these tools are provided. Ability to quickly learn how to use tools such as Captum (neural network explainability), Lime (general explainability), and the Adversarial Robustness Toolkit (ART). Familiarity with software basics including version control, setting up an integrated development environment (IDE), coding, and programming language basics is fully assumed and these are not covered in this guide.
+Readers of this guide should already be comfortable with the mathematical fundamentals behind modern ML, specifically those that underpin deep learning, including linear algebra, correlation, model fitting, optimization, and numerical methods. It is assumed readers are already proficient in Python and know how to set up local and remote Python development environments. Prior familiarity with tools including scikit-learn, torch, torch lightning, thunder, pandas, matplotlib, numpy, cupy, Open Neural Network Exchange (ONNX) is assumed but not strictly required to understand the guide. Ability to quickly learn how to use tools such as Captum (neural network explainability), Lime (general explainability), and the Adversarial Robustness Toolkit (ART). Familiarity with software basics including version control, setting up an integrated development environment (IDE), coding, and programming language basics, including basic object oriented programming, is fully assumed and these are not covered in this guide.
 
 ### 1.3. Motivation
 
@@ -300,30 +300,30 @@ packagename/
 
 ### 2.4. Evaluation of New Tools
 
-https://github.com/ruc-practical-ai/fall-2024-class-06/blob/main/notebooks/01_image_sensor_modeling_with_pybsm.ipynb
+#### Technique: Thoroughly evaluate new software dependencies before adding them to a project.
 
-### 2.5. Collection of Examples
+In early research, it is common to quickly add dependencies to a project to develop quickly. In production software, however, there are many considerations which must be accounted for before adding a dependency to a project.
 
-#### 2.5.1. Basic Python Packages
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/basic_packages_introduction/01_numpy.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/basic_packages_introduction/02_pandas.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/basic_packages_introduction/03_pandas_plots.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/basic_packages_introduction/04_matplotlib_plots.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/basic_packages_introduction/05_matplotlib_widgets.ipynb
+Before adding a dependency to a project preparing for transition to production, ensure the entire team is satisfied with the answers to all of the following questions.
 
-#### 2.5.2. ML Packages
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/ml_packages_introduction/01_intro_to_scikit_regression.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/ml_packages_introduction/02_intro_to_scikit_classification.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/ml_packages_introduction/03_clustering_with_scikit.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/ml_packages_introduction/04_pytorch_introduction.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-03/blob/main/ml_packages_introduction/05_pytorch_autoencoder_example.ipynb
-
-#### 2.5.3. PyTorch Examples
-https://github.com/ruc-practical-ai/fall-2024-class-05/blob/main/notebooks/00_dataloading.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-05/blob/main/notebooks/01_torch_transforms.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-05/blob/main/notebooks/02_model_explainability_with_captum.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-05/blob/main/notebooks/03_model_saving_with_onnx.ipynb
-https://github.com/ruc-practical-ai/fall-2024-class-05/blob/main/notebooks/04_visualizing_models.ipynb
+* Who is it made by? Are they a reliable source? What are their credentials?
+* How many people was it made by? A team or an individual?
+* Who is it maintained by? How many people?
+* How often is it updated? When was it last updated?
+* How well documented is it? Is there a support community?
+* Is there contributor documentation? If you need a feature is there a clear way to request it?
+* What are the dependencies? Will they conflict with any other project dependencies? How standard are they and are they well maintained?
+* Have there been independent evaluations?
+* Is there backing in the methods used in peer reviewed literature?
+* What is the license of the project? Is it free to use for your use case? Are there restrictions that prevent your use case?
+* When working with non-free software under a budget or on a for-profit project:
+    * If there is a license, can your project's budget incur the cost?
+    * Will the license affect your profit margins?
+    * Does your organization have an open source approval process?
+    * How quickly will the inclusion of this dependency by approved? Will approval change project schedule?
+    * Does it need to be installed on your production system or just on your development system? Are there additional approvals required to install it on your production system?
+    * Who from your organization needs to be consulted / informed? Your software architect? Your manager?
+    * Does your customer need to be informed? Do they have expectations on the dependencies your project will have?
 
 ## 3. ML Requirements, Best Practices, and Techniques
 
@@ -409,23 +409,150 @@ https://github.com/ruc-practical-ai/syllabus
 
 ### 5.1. ML Anti-Patterns
 
+#### Anti-pattern: DO NOT start a project without defining the problem to be addressed.
+
+#### Anti-pattern: DO NOT start an ML project without assessing if ML is the best solution.
+
+#### Anti-pattern: DO NOT start a new ML project without assessing a baseline to improve against.
+
+#### Anti-pattern: DO NOT train a complicated model without evaluating a simple model.
+
+#### Anti-pattern: DO NOT assume a waterfall development schedule will work for MLOps projects.
+
+#### Anti-pattern: DO NOT assume human labels are infallible or unbiased.
+
+#### Anti-pattern: DO NOT employ ML if there is no mechanism to detect data drift and retrain to account for data drift as needed.
+
+#### Anti-pattern: DO NOT couple training and inference code.
+
+#### Anti-pattern: DO NOT use insecure formats for final model serialization.
+
+#### Anti-pattern: DO NOT use unclean data.
+
+#### Anti-pattern: DO NOT use data that has not been checked for potentially ambiguous or inseparable cases.
+
+#### Anti-pattern: DO NOT use data from a sensor without understanding how the sensor works.
+
+#### Anti-pattern: DO NOT use data from a sensor without quantifying the performance limits of the sensor.
+
+#### Anti-pattern: DO NOT use a single architecture without performing an architecture search.
+
+#### Anti-pattern: DO NOT ignore the no free lunch theorem - make the model's task as narrow as possible.
+
+#### Anti-pattern: DO NOT tune multiple hyperparameters at once.
+
+#### Anti-pattern: DO NOT cut models for production without running explainability.
+
+#### Anti-pattern: DO NOT wait until final training runs to check explainability results.
+
+#### Anti-pattern: DO NOT show performance curves without repeating experiments to ensure results are repeatable.
+
+#### Anti-pattern: DO NOT push models to production without a conformance test.
+
+#### Anti-pattern: DO NOT show performance results to stakeholders without domain-specific system-level performance results.
+
 ### 5.2. Visualization Anti-Patterns
+
+#### Anti-pattern: DO NOT show plots with no title.
+
+#### Anti-pattern: DO NOT show plots with no axis labels.
+
+#### Anti-pattern: DO NOT show plots where axis ticks and associated text run together.
+
+#### Anti-pattern: DO NOT show plots where the axes labels or titles are too small to see.
+
+#### Anti-pattern: DO NOT show plots with more labels or more x-ticks than anyone can reasonably see.
+
+#### Anti-pattern: DO NOT show plots which show multiple relationships with no legend.
+
+#### Anti-pattern: DO NOT show subplots that run into other plots.
+
+#### Anti-pattern: DO NOT show dates in non-date format (e.g., year 2000.5).
+
+#### Anti-pattern: DO NOT use grid lines unnecessarily.
+
+#### Anti-pattern: DO NOT show noisy data without extracting a smooth trend or determining that no trend exists.
+
+#### Anti-pattern: DO NOT show axes in unnatural units (please scale data so that there are only 3 numbers before the decimal place, e.g., 50 km rather than 5e4 m).
+
+#### Anti-pattern: DO NOT show statistical data without showing uncertainty.
+
+#### Anti-pattern: DO NOT use one-dimensional scatter plots to convey a distribution over a single independent variable, rather than using histograms, violin plots or other appropriate means of showing statistical data.
+
+#### Anti-pattern: DO NOT plot too many subplots without expanding the width or height of the figure to accommodate them.
+
+#### Anti-pattern: DO NOT show a correlation matrix without investigating the correlations for realism and investigating variables that are not correlated for mutual information with other variables (e.g., do not simply use `sns.PairGrid` or `sns.heatmap` without doing any other work)!
 
 ### 5.3. Technical Communication Anti-Patterns
 
+#### Anti-pattern: DO NOT write mathematical symbols in informal notation, e.g., `e^(sin(x))` rather than $e^{\sin(x)}$.
+
+#### Anti-pattern: DO NOT include cells that produce errors in your finished notebook.
+
+#### Anti-pattern: DO NOT leave necessary warnings unsuppressed in your notebook.
+
+#### Anti-pattern: DO NOT leave unnatural notation from the code in the plot labels (e.g., do not show a Y axis labelled `my_dataframe_col_with_altitude` instead of taking the time to label the axis `Altitude (km)`).
+
+#### Anti-pattern: DO NOT reference a quantity without specifying its units unless working with purely mathematical objects.
+
+#### Anti-pattern: DO NOT use improper capitalization in plot labels and axes.
+
+#### Anti-pattern: DO NOT turn in notebooks with spelling mistakes (please use a spell checker).
+
+#### Anti-pattern: DO NOT turn in notebooks with incomplete sentences.
+
+#### Anti-pattern: DO NOT use an exploratory tone, e.g., do not write "here we try X, it didn't work, so instead let's try Y". Exploratory tone is encouraged in exploratory notes, but this project will produce a final deliverable!
+
+#### Anti-pattern: DO NOT forget to make the goal of each notebook section clear to the reader.
+
 ### 5.4. Software Anti-Patterns
+
+#### Anti-pattern: DO NOT develop large blocks of code inside a notebook. Instead, make them available as reusable modules.
+
+#### Anti-pattern: DO NOT use paths specific to your local machine or personal development environment.
+
+#### Anti-pattern: DO NOT use for loops where NumPy can be used instead.
+
+#### Anti-pattern: DO NOT write overly lengthy lines (> 120 characters, or > 80 if you use `black`).
+
+#### Anti-pattern: DO NOT use single letter variable names.
+
+#### Anti-pattern: DO NOT leave commented out code in your notebook.
 
 #### Anti-pattern: DO NOT comment every line of code.
 
 Commenting every line of code can be helpful in student examples. It is also a popular style used by generative AI models since the comments help users see the generative AI model's reasoning. In production code, however, commenting every line distracts readers from the code itself, which should be self-documenting if it is well written with well-named variables and function. Do not push code with every line commented to production. Write self-documenting code and add comments deliberately to explain lines that are surprising.
 
-#### Anti-pattern: DO NOT Assume C++ will make Inference Faster or More Memory Efficient by Default.
+#### Anti-pattern: DO NOT assume C++ will make Inference Faster or More Memory Efficient by Default.
 
 The main reason many production ML inference frameworks use C++ (or another compiled language) is runtime or memory requirements. However, moving to C++ will not automatically speed up code. Any benefits of moving to a compiled language will only be realized through well-written code by developers skilled in the language. Before deciding to adopt a language for inference due to perceived performance gains, evaluate the availability of a skilled team to implement software in that language.
 
-#### Anti-pattern: DO NOT Allow Decoupling Training and Inference to Lead to Technical Debt Accumulation in Training Software.
+#### Anti-pattern: DO NOT allow Decoupling Training and Inference to Lead to Technical Debt Accumulation in Training Software.
 
 In many projects, offline analysis tools might not be kept up to the same standards of code review as production software. If ML training is decoupled from inference, the training software must be held to the same standards as the inference software, since it produces the weights which define the inference software execution.
 
 ### 5.5. General Common Mistakes
 
+#### Anti-pattern: DO NOT leave sections incomplete.
+
+#### Anti-pattern: DO NOT report a successful result but show a poor hyperparameter search or learning curves with error increasing without discussion.
+
+#### Anti-pattern: DO NOT report a successful result and show a clearly overfit model.
+
+#### Anti-pattern: DO NOT leave dead code or broken cells in a notebook.
+
+#### Anti-pattern: DO NOT show a flattening error curve clearly indicating the problem is outside of model capacity without taking steps to increase model capacity.
+
+#### Anti-pattern: DO NOT superimpose plots incorrectly; be careful with plot code and ensure plots render in a way that makes them appear legible.
+
+#### Anti-pattern: DO NOT choose a problem outside your ability to fit a model (e.g., choosing a dataset so large you will not have the resources to train models that can solve the task).
+
+#### Anti-pattern: DO NOT perform robustness testing and report success while showing non-monotonic or error curves that *decrease* as a transform becomes more severe.
+
+#### Anti-pattern: DO NOT forget to compare proposed improvements to a baseline.
+
+#### Anti-pattern: DO NOT forget to visualize your data to determine if it is labeled and loaded correctly.
+
+#### Anti-pattern: DO NOT leave out robustness testing and explainability.
+
+#### Anti-pattern: DO NOT forget to document hyperparameters tuned.
